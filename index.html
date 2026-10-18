@@ -14,11 +14,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex flex-col min-h-screen overflow-x-hidden">
 
-    <!-- Navbar -->
-    <header class="bg-tech-900 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
+    <!-- Navbar (Desktop & Mobile Header) -->
+    <header class="bg-tech-900 text-white shadow-lg sticky top-0 z-40">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <!-- Logo & Brand -->
             <div class="flex flex-col">
                 <h1 class="text-2xl font-extrabold tracking-wider text-tech-accent">
                     <a href="index.html">Arfi Tech</a>
@@ -26,55 +28,102 @@
                 <p class="text-[10px] font-light text-gray-400 mt-1 uppercase tracking-widest">Powered by Dr Usama Arfi</p>
             </div>
             
-            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+            <!-- Mobile Menu Toggle Button -->
+            <button id="open-sidebar" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
 
-            <nav id="mobile-menu" class="hidden w-full md:flex md:w-auto md:items-center mt-4 md:mt-0 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-sm font-medium">
-                <a href="index.html" class="hover:text-tech-accent transition duration-300">Home</a>
-                
-                <!-- Dynamic Dropdown for Categories -->
-                <div class="relative group">
-                    <button class="hover:text-tech-accent transition duration-300 flex items-center">
-                        Categories <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div id="nav-categories" class="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-xl hidden group-hover:block border border-gray-100 overflow-hidden">
-                        <span class="block px-4 py-3 text-xs text-gray-400">Loading...</span>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <nav class="flex items-center space-x-6 text-sm font-medium">
+                    <a href="index.html" class="hover:text-tech-accent transition duration-300">Home</a>
+                    
+                    <!-- Dropdown -->
+                    <div class="relative group">
+                        <button class="hover:text-tech-accent transition duration-300 flex items-center py-2">
+                            Categories <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div id="nav-categories" class="absolute left-0 mt-0 w-48 bg-white text-gray-800 rounded-md shadow-xl hidden group-hover:block border border-gray-100 overflow-hidden z-50">
+                            <span class="block px-4 py-3 text-xs text-gray-400">Loading...</span>
+                        </div>
                     </div>
-                </div>
 
-                <a href="about.html" class="hover:text-tech-accent transition duration-300">About Dr Usama</a>
-                <a href="#contact-section" class="hover:text-tech-accent transition duration-300">Contact</a>
-            </nav>
+                    <a href="about.html" class="hover:text-tech-accent transition duration-300">About Dr Usama</a>
+                    <a href="#contact-section" class="hover:text-tech-accent transition duration-300">Contact</a>
+                </nav>
+
+                <!-- Desktop Search Bar -->
+                <div class="relative border-l border-gray-700 pl-6">
+                    <input type="text" id="desktop-search" placeholder="Search..." class="bg-tech-800 text-sm text-white placeholder-gray-400 rounded-full pl-4 pr-10 py-1.5 focus:outline-none focus:ring-2 focus:ring-tech-accent w-40 focus:w-56 transition-all duration-300">
+                    <svg class="w-4 h-4 absolute right-3 top-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </div>
         </div>
     </header>
 
+    <!-- PROFESSIONAL MOBILE SIDEBAR (Drawer) -->
+    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/60 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-72 bg-white z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <!-- Sidebar Header -->
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            <div>
+                <h2 class="text-xl font-extrabold text-tech-accent">Arfi Tech</h2>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Dr Usama Arfi</p>
+            </div>
+            <button id="close-sidebar" class="text-gray-400 hover:text-red-500 focus:outline-none transition">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Search Bar -->
+        <div class="p-4 border-b border-gray-100 bg-white">
+            <div class="relative">
+                <input type="text" id="mobile-search" placeholder="Search articles..." class="w-full px-4 py-2 bg-gray-100 border-transparent rounded-lg focus:bg-white focus:border-tech-accent focus:ring-2 focus:ring-tech-accent text-gray-800 text-sm outline-none transition">
+                <svg class="w-4 h-4 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+        </div>
+
+        <!-- Sidebar Links -->
+        <nav class="flex-grow p-4 space-y-1 overflow-y-auto bg-white">
+            <a href="index.html" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition">🏠 Home</a>
+            
+            <div class="px-4 py-3 text-gray-700 font-medium">
+                <span class="flex items-center">📂 Categories</span>
+                <div id="mobile-nav-categories" class="mt-2 ml-4 pl-4 border-l-2 border-gray-200 space-y-3 text-sm text-gray-500">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <a href="about.html" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition">👨‍⚕️ About Dr Usama</a>
+            <a href="#contact-section" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium transition">📞 Contact</a>
+        </nav>
+    </aside>
+
     <!-- Hero Section -->
-    <section class="bg-tech-800 text-white py-20">
+    <section class="bg-tech-800 text-white py-16">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">Innovating the Future with <span class="text-tech-accent">AI</span></h2>
-            <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Explore cutting-edge tech solutions, daily AI insights, and professional web development guides.</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Innovating the Future with <span class="text-tech-accent">AI</span></h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">Explore cutting-edge tech solutions, daily AI insights, and professional web development guides.</p>
         </div>
     </section>
 
     <!-- Main Content: Blog Grid -->
-    <main class="container mx-auto px-6 py-16 flex-grow">
-        <div class="flex justify-between items-end mb-10 border-b pb-4">
-            <h3 class="text-3xl font-bold text-gray-900">Latest Articles</h3>
+    <main class="container mx-auto px-6 py-12 flex-grow">
+        <div class="flex justify-between items-end mb-8 border-b pb-4">
+            <h3 id="grid-title" class="text-3xl font-bold text-gray-900">Latest Articles</h3>
         </div>
 
         <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Firebase posts will be injected here -->
+            <!-- Posts Inject Hongi Yahan -->
             <div class="col-span-full text-center py-10">
                 <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-tech-accent mx-auto mb-4"></div>
-                <p class="text-gray-500 font-medium">Fetching latest articles from Arfi Tech...</p>
+                <p class="text-gray-500 font-medium">Loading Arfi Tech...</p>
             </div>
         </div>
     </main>
 
-    <!-- Professional Footer -->
-    <footer id="contact-section" class="bg-tech-900 text-gray-300 py-12 border-t border-tech-800">
+    <!-- Footer -->
+    <footer id="contact-section" class="bg-tech-900 text-gray-300 py-12 border-t border-tech-800 mt-auto">
         <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
             <div>
                 <h2 class="text-2xl font-bold text-white mb-4">Arfi Tech</h2>
@@ -103,9 +152,32 @@
         </div>
     </footer>
 
-    <!-- Firebase Connection & Logic -->
+    <!-- Firebase Connection & Interactive Logic -->
     <script>
-        // 1. Firebase Config (Aapki original details)
+        // 1. Mobile Sidebar Animation Logic
+        const sidebar = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('mobile-sidebar-overlay');
+        const openBtn = document.getElementById('open-sidebar');
+        const closeBtn = document.getElementById('close-sidebar');
+
+        function openSidebar() {
+            overlay.classList.remove('hidden');
+            // Chota sa delay taake CSS animation properly kaam kare
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            sidebar.classList.remove('-translate-x-full');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+
+        openBtn.addEventListener('click', openSidebar);
+        closeBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // 2. Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDlCXYhtZtMntiuRPeviR20hmg8v3WiFtA",
             authDomain: "arfi-tech.firebaseapp.com",
@@ -114,77 +186,100 @@
             messagingSenderId: "593898208715",
             appId: "1:593898208715:web:d2d6d6ca14ca1592210a4e"
         };
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 2. Mobile Menu Toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        // 3. Fetch Categories for Navbar Dropdown
+        // 3. Fetch Categories (For Desktop Dropdown & Mobile Sidebar)
         db.collection("categories").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
             const navCategories = document.getElementById('nav-categories');
+            const mobileNavCategories = document.getElementById('mobile-nav-categories');
+            
             navCategories.innerHTML = '';
+            mobileNavCategories.innerHTML = '';
+
             if(snapshot.empty) {
-                navCategories.innerHTML = '<span class="block px-4 py-3 text-xs text-gray-500">No categories yet</span>';
+                navCategories.innerHTML = '<span class="block px-4 py-3 text-xs text-gray-500">No categories</span>';
+                mobileNavCategories.innerHTML = '<span class="block text-gray-400 text-xs">No categories</span>';
             } else {
                 snapshot.forEach((doc) => {
                     const catName = doc.data().name;
+                    // Inject in Desktop
                     navCategories.innerHTML += `<a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50 last:border-0">${catName}</a>`;
+                    // Inject in Mobile Sidebar
+                    mobileNavCategories.innerHTML += `<a href="#" class="block py-1 text-gray-600 hover:text-tech-accent transition">${catName}</a>`;
                 });
             }
         });
 
-        // 4. Fetch Posts from Database
-        db.collection("posts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
-            const postsContainer = document.getElementById('posts-container');
-            postsContainer.innerHTML = ''; // Clear loading animation
+        // 4. Fetch & Search Posts Logic
+        let allPosts = []; // Posts yahan save hongi search karne ke liye
+        const postsContainer = document.getElementById('posts-container');
+        const gridTitle = document.getElementById('grid-title');
 
-            if (snapshot.empty) {
-                postsContainer.innerHTML = '<div class="col-span-full text-center py-10 bg-white rounded-xl shadow-sm border border-gray-100"><p class="text-gray-500">No articles published yet. Use Admin Panel to create one!</p></div>';
+        // Render HTML Function
+        function renderPosts(postsArray) {
+            postsContainer.innerHTML = '';
+            if (postsArray.length === 0) {
+                postsContainer.innerHTML = '<div class="col-span-full text-center py-10"><p class="text-gray-500">No matching articles found.</p></div>';
                 return;
             }
-
-            snapshot.forEach((doc) => {
-                const post = doc.data();
-                const postId = doc.id;
-                
-                // Remove HTML tags for the short description preview (Summary)
+            postsArray.forEach((post) => {
                 let plainText = post.content.replace(/<[^>]*>?/gm, ''); 
-                let excerpt = plainText.substring(0, 120) + '...';
+                let excerpt = plainText.substring(0, 100) + '...';
 
-                // Create Post Card
                 postsContainer.innerHTML += `
                     <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col">
-                        <a href="article.html?id=${postId}">
-                            <img src="${post.thumbnail}" alt="${post.title}" class="w-full h-56 object-cover hover:opacity-90 transition">
+                        <a href="article.html?id=${post.id}">
+                            <img src="${post.thumbnail}" alt="${post.title}" class="w-full h-52 object-cover hover:opacity-90 transition">
                         </a>
                         <div class="p-6 flex-grow flex flex-col">
                             <div class="flex items-center justify-between mb-3">
-                                <span class="bg-blue-50 text-tech-accent text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">${post.category}</span>
-                                <span class="text-xs text-gray-400 font-medium">${post.date}</span>
+                                <span class="bg-blue-50 text-tech-accent text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">${post.category}</span>
+                                <span class="text-[10px] text-gray-400 font-medium">${post.date}</span>
                             </div>
-                            <h4 class="text-xl font-bold text-gray-900 mb-3 hover:text-tech-accent transition">
-                                <a href="article.html?id=${postId}">${post.title}</a>
+                            <h4 class="text-lg font-bold text-gray-900 mb-2 hover:text-tech-accent transition leading-tight">
+                                <a href="article.html?id=${post.id}">${post.title}</a>
                             </h4>
                             <p class="text-gray-600 text-sm mb-6 flex-grow leading-relaxed">${excerpt}</p>
                             
                             <div class="flex items-center mt-auto border-t border-gray-100 pt-4 justify-between">
                                 <div class="flex items-center">
-                                    <div class="h-8 w-8 rounded-full bg-tech-800 flex items-center justify-center text-white text-xs font-bold shadow-inner">UA</div>
-                                    <span class="ml-3 text-sm font-medium text-gray-700">Dr Usama</span>
+                                    <div class="h-7 w-7 rounded-full bg-tech-800 flex items-center justify-center text-white text-[10px] font-bold shadow-inner">UA</div>
+                                    <span class="ml-2 text-xs font-semibold text-gray-700">Dr Usama</span>
                                 </div>
-                                <a href="article.html?id=${postId}" class="text-tech-accent font-bold text-sm hover:underline">Read Article &rarr;</a>
+                                <a href="article.html?id=${post.id}" class="text-tech-accent font-bold text-xs hover:underline uppercase tracking-wide">Read &rarr;</a>
                             </div>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        // Fetch Posts from Firebase
+        db.collection("posts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+            allPosts = []; // Array clear karein
+            snapshot.forEach((doc) => {
+                allPosts.push({ id: doc.id, ...doc.data() });
+            });
+            renderPosts(allPosts); // Pehli dafa saari posts show karein
         });
+
+        // Search Functionality Logic
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredPosts = allPosts.filter(post => 
+                post.title.toLowerCase().includes(searchTerm) || 
+                post.category.toLowerCase().includes(searchTerm) || 
+                post.content.toLowerCase().includes(searchTerm)
+            );
+            
+            gridTitle.innerText = searchTerm ? `Search Results for "${searchTerm}"` : "Latest Articles";
+            renderPosts(filteredPosts);
+        }
+
+        // Attach event listeners to both search bars
+        document.getElementById('desktop-search').addEventListener('input', handleSearch);
+        document.getElementById('mobile-search').addEventListener('input', handleSearch);
     </script>
 </body>
 </html>
