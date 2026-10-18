@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arfi Tech | AI & Tech Solutions</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: { extend: { colors: { tech: { 900: '#0f172a', 800: '#1e293b', accent: '#3b82f6' } } } }
-        }
+        tailwind.config = { theme: { extend: { colors: { tech: { 900: '#0f172a', 800: '#1e293b', accent: '#3b82f6' } } } } }
     </script>
+
+    <!-- Firebase SDK (V8 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased flex flex-col min-h-screen">
 
@@ -23,18 +26,26 @@
                 <p class="text-[10px] font-light text-gray-400 mt-1 uppercase tracking-widest">Powered by Dr Usama Arfi</p>
             </div>
             
-            <!-- Mobile Menu Button -->
             <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
 
-            <!-- Navigation Links (Multi-page setup) -->
-            <nav id="mobile-menu" class="hidden w-full md:flex md:w-auto md:items-center mt-4 md:mt-0 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-sm font-medium transition-all">
+            <nav id="mobile-menu" class="hidden w-full md:flex md:w-auto md:items-center mt-4 md:mt-0 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-sm font-medium">
                 <a href="index.html" class="hover:text-tech-accent transition duration-300">Home</a>
-                <a href="ai-tools.html" class="hover:text-tech-accent transition duration-300">AI Tools</a>
+                
+                <!-- Dynamic Dropdown for Categories -->
+                <div class="relative group">
+                    <button class="hover:text-tech-accent transition duration-300 flex items-center">
+                        Categories <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div id="nav-categories" class="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-xl hidden group-hover:block border border-gray-100 overflow-hidden">
+                        <span class="block px-4 py-3 text-xs text-gray-400">Loading...</span>
+                    </div>
+                </div>
+
                 <a href="about.html" class="hover:text-tech-accent transition duration-300">About Dr Usama</a>
                 <a href="#contact-section" class="hover:text-tech-accent transition duration-300">Contact</a>
-                <!-- Notice: Admin link yahan se hata diya gaya hai -->
             </nav>
         </div>
     </header>
@@ -54,38 +65,36 @@
         </div>
 
         <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Firebase posts yahan aayengi -->
-            <p class="text-gray-500 italic">Posts loading...</p>
+            <!-- Firebase posts will be injected here -->
+            <div class="col-span-full text-center py-10">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-tech-accent mx-auto mb-4"></div>
+                <p class="text-gray-500 font-medium">Fetching latest articles from Arfi Tech...</p>
+            </div>
         </div>
     </main>
 
-    <!-- Professional Footer with Contact System -->
+    <!-- Professional Footer -->
     <footer id="contact-section" class="bg-tech-900 text-gray-300 py-12 border-t border-tech-800">
         <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- Brand Info -->
             <div>
                 <h2 class="text-2xl font-bold text-white mb-4">Arfi Tech</h2>
                 <p class="text-sm leading-relaxed mb-4">Your daily source for Artificial Intelligence updates, health tech integrations, and custom software development guides.</p>
                 <p class="text-xs uppercase tracking-widest text-tech-accent font-bold">Powered by Dr Usama Arfi</p>
             </div>
-            
-            <!-- Quick Links -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-4">Quick Links</h3>
                 <ul class="space-y-2 text-sm">
                     <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
-                    <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
-                    <li><a href="terms.html" class="hover:text-white transition">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
                 </ul>
             </div>
-
-            <!-- Contact Form -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-4">Contact Us</h3>
                 <form class="space-y-3">
                     <input type="email" placeholder="Your Email Address" class="w-full px-4 py-2 bg-tech-800 border border-gray-700 rounded focus:outline-none focus:border-tech-accent text-sm text-white">
                     <textarea rows="2" placeholder="Your Message" class="w-full px-4 py-2 bg-tech-800 border border-gray-700 rounded focus:outline-none focus:border-tech-accent text-sm text-white"></textarea>
-                    <button type="submit" class="bg-tech-accent hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full transition text-sm">Send Message</button>
+                    <button type="button" class="bg-tech-accent hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full transition text-sm">Send Message</button>
                 </form>
             </div>
         </div>
@@ -94,10 +103,87 @@
         </div>
     </footer>
 
-    <!-- Mobile Menu Logic -->
+    <!-- Firebase Connection & Logic -->
     <script>
+        // 1. Firebase Config (Aapki original details)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDlCXYhtZtMntiuRPeviR20hmg8v3WiFtA",
+            authDomain: "arfi-tech.firebaseapp.com",
+            projectId: "arfi-tech",
+            storageBucket: "arfi-tech.firebasestorage.app",
+            messagingSenderId: "593898208715",
+            appId: "1:593898208715:web:d2d6d6ca14ca1592210a4e"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        // 2. Mobile Menu Toggle
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // 3. Fetch Categories for Navbar Dropdown
+        db.collection("categories").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+            const navCategories = document.getElementById('nav-categories');
+            navCategories.innerHTML = '';
+            if(snapshot.empty) {
+                navCategories.innerHTML = '<span class="block px-4 py-3 text-xs text-gray-500">No categories yet</span>';
+            } else {
+                snapshot.forEach((doc) => {
+                    const catName = doc.data().name;
+                    navCategories.innerHTML += `<a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50 last:border-0">${catName}</a>`;
+                });
+            }
+        });
+
+        // 4. Fetch Posts from Database
+        db.collection("posts").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+            const postsContainer = document.getElementById('posts-container');
+            postsContainer.innerHTML = ''; // Clear loading animation
+
+            if (snapshot.empty) {
+                postsContainer.innerHTML = '<div class="col-span-full text-center py-10 bg-white rounded-xl shadow-sm border border-gray-100"><p class="text-gray-500">No articles published yet. Use Admin Panel to create one!</p></div>';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const post = doc.data();
+                const postId = doc.id;
+                
+                // Remove HTML tags for the short description preview (Summary)
+                let plainText = post.content.replace(/<[^>]*>?/gm, ''); 
+                let excerpt = plainText.substring(0, 120) + '...';
+
+                // Create Post Card
+                postsContainer.innerHTML += `
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col">
+                        <a href="article.html?id=${postId}">
+                            <img src="${post.thumbnail}" alt="${post.title}" class="w-full h-56 object-cover hover:opacity-90 transition">
+                        </a>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="bg-blue-50 text-tech-accent text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">${post.category}</span>
+                                <span class="text-xs text-gray-400 font-medium">${post.date}</span>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 mb-3 hover:text-tech-accent transition">
+                                <a href="article.html?id=${postId}">${post.title}</a>
+                            </h4>
+                            <p class="text-gray-600 text-sm mb-6 flex-grow leading-relaxed">${excerpt}</p>
+                            
+                            <div class="flex items-center mt-auto border-t border-gray-100 pt-4 justify-between">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-tech-800 flex items-center justify-center text-white text-xs font-bold shadow-inner">UA</div>
+                                    <span class="ml-3 text-sm font-medium text-gray-700">Dr Usama</span>
+                                </div>
+                                <a href="article.html?id=${postId}" class="text-tech-accent font-bold text-sm hover:underline">Read Article &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
         });
     </script>
 </body>
