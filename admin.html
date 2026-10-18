@@ -3,81 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Area | Arfi Tech</title>
+    <title>Advanced Admin CMS | Arfi Tech</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for textareas */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans antialiased min-h-screen flex flex-col items-center justify-center">
+<body class="bg-gray-50 font-sans antialiased min-h-screen flex flex-col items-center justify-center">
 
-    <!-- LOGIN SECTION -->
+    <!-- 1. LOGIN SECTION -->
     <div id="login-section" class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-200">
         <div class="text-center mb-8">
+            <div class="h-16 w-16 bg-slate-900 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 shadow-inner">AT</div>
             <h1 class="text-2xl font-bold text-slate-900">Admin Login</h1>
-            <p class="text-sm text-gray-500">Authorized access only.</p>
+            <p class="text-sm text-gray-500">Arfi Tech Secure Workspace</p>
         </div>
         
         <form id="login-form" class="space-y-5">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                <input type="text" id="admin-user" autocomplete="username" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="admin-user" autocomplete="username" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input type="password" id="admin-pass" autocomplete="current-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" id="admin-pass" autocomplete="current-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
             </div>
-            <button type="submit" class="w-full bg-slate-900 text-white font-bold py-2 rounded-lg hover:bg-slate-800 transition">Login to Dashboard</button>
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-lg hover:bg-blue-700 transition shadow-md">Login to Dashboard</button>
         </form>
     </div>
 
-    <!-- DASHBOARD SECTION (Hidden by default) -->
-    <div id="dashboard-section" class="hidden w-full h-full p-6">
-        <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md border border-gray-200">
-            <div class="flex justify-between items-center border-b pb-4 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Arfi Tech Workspace</h2>
-                <button onclick="logout()" class="text-red-500 text-sm font-bold hover:underline">Logout</button>
+    <!-- 2. MAIN DASHBOARD SECTION (Hidden by default) -->
+    <div id="dashboard-section" class="hidden w-full min-h-screen bg-gray-100 flex flex-col">
+        
+        <!-- Top Navbar -->
+        <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="h-10 w-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">UA</div>
+                    <div>
+                        <h2 class="text-lg font-bold leading-tight">Arfi Tech CMS</h2>
+                        <p class="text-[10px] text-gray-400 uppercase tracking-wider">Dr Usama Arfi</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="index.html" target="_blank" class="text-sm text-gray-300 hover:text-white transition flex items-center">View Site &nearr;</a>
+                    <button onclick="logout()" class="text-sm bg-red-600 hover:bg-red-500 px-4 py-1.5 rounded transition font-medium">Logout</button>
+                </div>
             </div>
+        </header>
+
+        <div class="container mx-auto px-6 py-8 flex flex-col md:flex-row gap-8 flex-grow">
             
-            <form id="post-form" class="space-y-6">
-                <!-- Title & Category -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Post Title</label>
-                        <input type="text" id="post-title" required placeholder="e.g., Future of AI in Nursing" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <!-- Sidebar Navigation -->
+            <aside class="w-full md:w-64 flex-shrink-0">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden sticky top-24">
+                    <div class="p-4 bg-gray-50 border-b border-gray-200">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Menu</span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Category / Tag</label>
-                        <input type="text" id="post-tag" required placeholder="e.g., AI Tech, Web Dev" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <nav class="flex flex-col p-2 space-y-1">
+                        <button onclick="switchTab('create-post')" id="tab-create" class="text-left px-4 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium transition">✏️ Create New Post</button>
+                        <button onclick="switchTab('manage-posts')" id="tab-manage" class="text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 font-medium transition">📚 Manage Posts</button>
+                        <button onclick="switchTab('manage-categories')" id="tab-categories" class="text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 font-medium transition">📂 Manage Categories</button>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
+                
+                <!-- TAB A: CREATE POST -->
+                <div id="content-create-post" class="block">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">Create New Article</h3>
+                    <form id="post-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Post Title</label>
+                                <input type="text" id="post-title" required placeholder="e.g., Future of AI in Nursing" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Category (Dynamically loaded)</label>
+                                <select id="post-category" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                                    <option value="">Select Category...</option>
+                                    <!-- Dummy data, ye Firebase se ayega -->
+                                    <option value="AI Tech">AI Tech</option>
+                                    <option value="Nursing Tech">Nursing Tech</option>
+                                    <option value="Web Dev">Web Dev</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Thumbnail Image Link (Main)</label>
+                                <input type="url" id="post-thumb" required placeholder="https://..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Middle Image Link (Optional)</label>
+                                <input type="url" id="post-middle-img" placeholder="https://..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Article Content</label>
+                            <textarea id="post-content" required rows="10" placeholder="Yahan apna article likhein. You can use HTML tags like <b>bold</b> or <br> for new lines." class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50 leading-relaxed"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3.5 rounded-lg hover:bg-slate-800 transition shadow-lg text-lg">
+                            Publish Post to Arfi Tech
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TAB B: MANAGE POSTS -->
+                <div id="content-manage-posts" class="hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">Manage Posts</h3>
+                    
+                    <!-- Search Bar -->
+                    <div class="mb-6">
+                        <input type="text" placeholder="Search posts to edit or delete..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                    </div>
+
+                    <!-- Dummy Post List (Ye table Firebase se data aane par real ho jayega) -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600 text-sm uppercase tracking-wider">
+                                    <th class="p-4 rounded-tl-lg">Title</th>
+                                    <th class="p-4">Category</th>
+                                    <th class="p-4">Date</th>
+                                    <th class="p-4 rounded-tr-lg text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <!-- Example Row -->
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                    <td class="p-4 font-medium text-gray-800">Future of AI in Web Development</td>
+                                    <td class="p-4"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">AI Tech</span></td>
+                                    <td class="p-4 text-gray-500">Oct 19, 2026</td>
+                                    <td class="p-4 text-right space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800 font-medium bg-blue-50 px-3 py-1 rounded transition">Edit</button>
+                                        <button class="text-red-600 hover:text-red-800 font-medium bg-red-50 px-3 py-1 rounded transition">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Images Links -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail Image (URL)</label>
-                        <input type="url" id="post-thumb" required placeholder="https://link-to-main-image.jpg" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <p class="text-[10px] text-gray-500 mt-1">Ye bahar grid mein show hogi.</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Middle Image (URL) - Optional</label>
-                        <input type="url" id="post-middle-img" placeholder="https://link-to-center-image.jpg" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <p class="text-[10px] text-gray-500 mt-1">Ye article ke text ke center mein show hogi.</p>
+                <!-- TAB C: MANAGE CATEGORIES -->
+                <div id="content-manage-categories" class="hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">Manage Categories</h3>
+                    
+                    <form id="category-form" class="mb-8 flex gap-4">
+                        <input type="text" placeholder="Enter new category name..." required class="flex-grow px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                        <button type="submit" class="bg-slate-900 text-white font-bold px-6 py-2 rounded-lg hover:bg-slate-800 transition">Add Category</button>
+                    </form>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Example Category Cards -->
+                        <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg flex justify-between items-center hover:shadow-sm transition">
+                            <span class="font-bold text-gray-700">AI Tech</span>
+                            <button class="text-red-500 hover:text-red-700 text-xl leading-none">&times;</button>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg flex justify-between items-center hover:shadow-sm transition">
+                            <span class="font-bold text-gray-700">Nursing Tech</span>
+                            <button class="text-red-500 hover:text-red-700 text-xl leading-none">&times;</button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Content Area -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Article Content</label>
-                    <textarea id="post-content" required rows="8" placeholder="Yahan apna mukammal article likhein... (Aap <br> ya <b> HTML tags bhi use kar sakte hain)" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-
-                <button type="submit" id="publish-btn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-500 transition shadow-md">
-                    Publish Post to Live Website
-                </button>
-            </form>
+            </main>
         </div>
     </div>
 
     <script>
-        // Login Logic
+        // --- LOGIN LOGIC ---
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const user = document.getElementById('admin-user').value;
@@ -86,36 +190,48 @@
             if (user === 'drusamaarfi' && pass === '727738') {
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('dashboard-section').classList.remove('hidden');
-                document.body.classList.remove('items-center', 'justify-center'); 
+                document.body.classList.remove('items-center', 'justify-center');
+                document.body.classList.add('bg-gray-100');
             } else {
-                alert('Invalid Username or Password!');
+                alert('Access Denied! Invalid Username or Password.');
             }
         });
 
-        // Logout Logic
         function logout() {
             document.getElementById('admin-user').value = '';
             document.getElementById('admin-pass').value = '';
             document.getElementById('dashboard-section').classList.add('hidden');
             document.getElementById('login-section').classList.remove('hidden');
             document.body.classList.add('items-center', 'justify-center');
+            document.body.classList.remove('bg-gray-100');
         }
 
-        // Form Logic (For testing before Firebase connection)
-        document.getElementById('post-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const postData = {
-                title: document.getElementById('post-title').value,
-                tag: document.getElementById('post-tag').value,
-                thumbnail: document.getElementById('post-thumb').value,
-                middleImage: document.getElementById('post-middle-img').value,
-                content: document.getElementById('post-content').value
-            };
-            
-            console.log("Post Ready to Upload:", postData);
-            alert("Post Data Captured! (Check browser console). Firebase connect hone par ye live ho jayegi.");
-        });
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tabId) {
+            // Hide all contents
+            document.getElementById('content-create-post').classList.add('hidden');
+            document.getElementById('content-manage-posts').classList.add('hidden');
+            document.getElementById('content-manage-categories').classList.add('hidden');
+
+            // Reset all tab button styles
+            const tabs = ['tab-create', 'tab-manage', 'tab-categories'];
+            tabs.forEach(t => {
+                document.getElementById(t).className = "text-left px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 font-medium transition";
+            });
+
+            // Show selected content and highlight button
+            if(tabId === 'create-post') {
+                document.getElementById('content-create-post').classList.remove('hidden');
+                document.getElementById('tab-create').className = "text-left px-4 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium transition";
+            } else if (tabId === 'manage-posts') {
+                document.getElementById('content-manage-posts').classList.remove('hidden');
+                document.getElementById('tab-manage').className = "text-left px-4 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium transition";
+            } else if (tabId === 'manage-categories') {
+                document.getElementById('content-manage-categories').classList.remove('hidden');
+                document.getElementById('tab-categories').className = "text-left px-4 py-3 rounded-lg bg-blue-50 text-blue-700 font-medium transition";
+            }
+        }
     </script>
 </body>
-</html>
+    </html>
+    
