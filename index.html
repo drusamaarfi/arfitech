@@ -1,30 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Meta Tags for SEO -->
     <title>Arfi Tech | AI & Tech Solutions</title>
-    <meta name="description" content="Latest AI trends, smart software solutions, and comprehensive web development guides powered by Dr Usama Arfi.">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Custom Tailwind Configuration for Brand Colors -->
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        tech: {
-                            900: '#0f172a', // Slate 900
-                            800: '#1e293b', // Slate 800
-                            accent: '#3b82f6', // Blue 500
-                        }
-                    }
-                }
-            }
+            theme: { extend: { colors: { tech: { 900: '#0f172a', 800: '#1e293b', accent: '#3b82f6' } } } }
         }
     </script>
 </head>
@@ -32,7 +15,7 @@
 
     <!-- Navbar -->
     <header class="bg-tech-900 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
             <div class="flex flex-col">
                 <h1 class="text-2xl font-extrabold tracking-wider text-tech-accent">
                     <a href="index.html">Arfi Tech</a>
@@ -40,12 +23,18 @@
                 <p class="text-[10px] font-light text-gray-400 mt-1 uppercase tracking-widest">Powered by Dr Usama Arfi</p>
             </div>
             
-            <nav class="hidden md:flex space-x-8 text-sm font-medium">
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+
+            <!-- Navigation Links (Multi-page setup) -->
+            <nav id="mobile-menu" class="hidden w-full md:flex md:w-auto md:items-center mt-4 md:mt-0 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-sm font-medium transition-all">
                 <a href="index.html" class="hover:text-tech-accent transition duration-300">Home</a>
-                <a href="#ai-tools" class="hover:text-tech-accent transition duration-300">AI Tools</a>
-                <a href="#about" class="hover:text-tech-accent transition duration-300">About</a>
-                <!-- Admin login link (hidden from normal users, just for you) -->
-                <a href="admin.html" class="text-gray-600 hover:text-white transition duration-300 text-xs mt-1">Admin</a>
+                <a href="ai-tools.html" class="hover:text-tech-accent transition duration-300">AI Tools</a>
+                <a href="about.html" class="hover:text-tech-accent transition duration-300">About Dr Usama</a>
+                <a href="#contact-section" class="hover:text-tech-accent transition duration-300">Contact</a>
+                <!-- Notice: Admin link yahan se hata diya gaya hai -->
             </nav>
         </div>
     </header>
@@ -55,10 +44,6 @@
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">Innovating the Future with <span class="text-tech-accent">AI</span></h2>
             <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Explore cutting-edge tech solutions, daily AI insights, and professional web development guides.</p>
-            <div class="max-w-md mx-auto relative">
-                <input type="text" placeholder="Search articles..." class="w-full py-3 px-5 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-tech-accent">
-                <button class="absolute right-2 top-2 bg-tech-accent text-white px-4 py-1 rounded-full font-semibold hover:bg-blue-600 transition">Search</button>
-            </div>
         </div>
     </section>
 
@@ -66,48 +51,54 @@
     <main class="container mx-auto px-6 py-16 flex-grow">
         <div class="flex justify-between items-end mb-10 border-b pb-4">
             <h3 class="text-3xl font-bold text-gray-900">Latest Articles</h3>
-            <span class="text-sm font-medium text-tech-accent cursor-pointer hover:underline">View All &rarr;</span>
         </div>
 
-        <!-- FIREBASE INJECTION CONTAINER -->
-        <!-- Yahan par hum JavaScript ke zariye Firebase se posts la kar show karenge -->
         <div id="posts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Dummy Card (Ye baad mein JS se dynamically generate hoga) -->
-            <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col">
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tech" class="w-full h-56 object-cover">
-                <div class="p-6 flex-grow flex flex-col">
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="bg-blue-50 text-tech-accent text-xs font-bold px-3 py-1 rounded-full uppercase">AI Tech</span>
-                        <span class="text-xs text-gray-400 font-medium">Oct 18, 2026</span>
-                    </div>
-                    <h4 class="text-xl font-bold text-gray-900 mb-3 hover:text-tech-accent transition">Future of Web Development with AI Prompts</h4>
-                    <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">Discover how AI is transforming the way we write code and design custom interfaces...</p>
-                    <div class="flex items-center mt-auto border-t pt-4">
-                        <div class="h-8 w-8 rounded-full bg-tech-800 flex items-center justify-center text-white text-xs font-bold shadow-inner">UA</div>
-                        <span class="ml-3 text-sm font-medium text-gray-700">Dr Usama Arfi</span>
-                    </div>
-                </div>
-            </div>
-            
+            <!-- Firebase posts yahan aayengi -->
+            <p class="text-gray-500 italic">Posts loading...</p>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-tech-900 text-gray-400 py-10 border-t border-tech-800">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0 text-center md:text-left">
-                <h2 class="text-xl font-bold text-white mb-1">Arfi Tech</h2>
-                <p class="text-xs">&copy; 2026 All rights reserved.</p>
+    <!-- Professional Footer with Contact System -->
+    <footer id="contact-section" class="bg-tech-900 text-gray-300 py-12 border-t border-tech-800">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+            <!-- Brand Info -->
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4">Arfi Tech</h2>
+                <p class="text-sm leading-relaxed mb-4">Your daily source for Artificial Intelligence updates, health tech integrations, and custom software development guides.</p>
+                <p class="text-xs uppercase tracking-widest text-tech-accent font-bold">Powered by Dr Usama Arfi</p>
             </div>
-            <div class="text-center md:text-right">
-                <p class="text-xs mt-2 uppercase tracking-widest text-slate-500">Powered by Dr Usama Arfi</p>
+            
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition">Terms of Service</a></li>
+                </ul>
             </div>
+
+            <!-- Contact Form -->
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">Contact Us</h3>
+                <form class="space-y-3">
+                    <input type="email" placeholder="Your Email Address" class="w-full px-4 py-2 bg-tech-800 border border-gray-700 rounded focus:outline-none focus:border-tech-accent text-sm text-white">
+                    <textarea rows="2" placeholder="Your Message" class="w-full px-4 py-2 bg-tech-800 border border-gray-700 rounded focus:outline-none focus:border-tech-accent text-sm text-white"></textarea>
+                    <button type="submit" class="bg-tech-accent hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full transition text-sm">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 mt-10 pt-6 border-t border-gray-800 text-center text-xs">
+            &copy; 2026 Arfi Tech. All rights reserved.
         </div>
     </footer>
 
-    <!-- Main Logic Script (To be created next) -->
-    <script src="app.js"></script>
+    <!-- Mobile Menu Logic -->
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
 </body>
-                      </html>
-                      
+</html>
