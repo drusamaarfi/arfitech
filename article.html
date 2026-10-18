@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article | Arfi Tech</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { tech: { 900: '#0f172a', 800: '#1e293b', accent: '#3b82f6' } } } } }
+    </script>
+
+    <!-- Firebase SDK (V8 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <header class="bg-tech-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
+            <div class="flex flex-col">
+                <h1 class="text-2xl font-extrabold tracking-wider text-tech-accent">
+                    <a href="index.html">Arfi Tech</a>
+                </h1>
+                <p class="text-[10px] font-light text-gray-400 mt-1 uppercase tracking-widest">Powered by Dr Usama Arfi</p>
+            </div>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+
+            <nav id="mobile-menu" class="hidden w-full md:flex md:w-auto md:items-center mt-4 md:mt-0 flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-sm font-medium">
+                <a href="index.html" class="hover:text-tech-accent transition duration-300">Home</a>
+                <a href="about.html" class="hover:text-tech-accent transition duration-300">About Dr Usama</a>
+                <a href="#contact-section" class="hover:text-tech-accent transition duration-300">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-12 flex-grow max-w-4xl">
+        
+        <!-- Loading Indicator -->
+        <div id="loading-spinner" class="text-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-tech-accent mx-auto mb-4"></div>
+            <p class="text-gray-500 font-medium text-lg">Loading Article...</p>
+        </div>
+
+        <!-- Article Container (Hidden until data is loaded) -->
+        <article id="article-container" class="hidden bg-white p-6 md:p-12 rounded-2xl shadow-sm border border-gray-100">
+            
+            <!-- Category and Date -->
+            <div class="flex items-center space-x-4 mb-6">
+                <span id="article-category" class="bg-blue-100 text-blue-700 text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">Category</span>
+                <span id="article-date" class="text-sm text-gray-400 font-medium">Date</span>
+            </div>
+
+            <!-- Title -->
+            <h1 id="article-title" class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-8 leading-tight">Article Title</h1>
+
+            <!-- Author Info -->
+            <div class="flex items-center mb-10 pb-8 border-b border-gray-100">
+                <div class="h-12 w-12 rounded-full bg-tech-800 flex items-center justify-center text-white text-lg font-bold shadow-inner">UA</div>
+                <div class="ml-4">
+                    <p class="text-sm font-bold text-gray-900">Dr Usama Arfi</p>
+                    <p class="text-xs text-tech-accent">Author & Tech Enthusiast</p>
+                </div>
+            </div>
+
+            <!-- Main Thumbnail Image -->
+            <img id="article-thumbnail" src="" alt="Thumbnail" class="w-full h-auto max-h-[500px] object-cover rounded-xl shadow-md mb-10">
+
+            <!-- Dynamic Content Area -->
+            <div id="article-body" class="text-lg text-gray-700 leading-relaxed space-y-6">
+                <!-- Content and Middle Image will be injected here via JS -->
+            </div>
+
+        </article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact-section" class="bg-tech-900 text-gray-300 py-12 border-t border-tech-800 mt-10">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4">Arfi Tech</h2>
+                <p class="text-sm leading-relaxed mb-4">Your daily source for Artificial Intelligence updates, health tech integrations, and custom software development guides.</p>
+                <p class="text-xs uppercase tracking-widest text-tech-accent font-bold">Powered by Dr Usama Arfi</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                    <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">Contact Us</h3>
+                <form class="space-y-3">
+                    <input type="email" placeholder="Your Email Address" class="w-full px-4 py-2 bg-tech-800 border border-gray-700 rounded focus:outline-none focus:border-tech-accent text-sm text-white">
+                    <button type="button" class="bg-tech-accent hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full transition text-sm">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 mt-10 pt-6 border-t border-gray-800 text-center text-xs">
+            &copy; 2026 Arfi Tech. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Firebase Connection & Logic -->
+    <script>
+        // 1. Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // 2. Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDlCXYhtZtMntiuRPeviR20hmg8v3WiFtA",
+            authDomain: "arfi-tech.firebaseapp.com",
+            projectId: "arfi-tech",
+            storageBucket: "arfi-tech.firebasestorage.app",
+            messagingSenderId: "593898208715",
+            appId: "1:593898208715:web:d2d6d6ca14ca1592210a4e"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        // 3. Get Post ID from URL (e.g., article.html?id=123xyz)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        if (!postId) {
+            document.getElementById('loading-spinner').innerHTML = '<p class="text-red-500 font-bold text-xl">Error: Article Not Found.</p><a href="index.html" class="text-blue-500 underline mt-4 block">Go back to Home</a>';
+        } else {
+            // 4. Fetch specific post from Firebase
+            db.collection("posts").doc(postId).get().then((doc) => {
+                if (doc.exists) {
+                    const post = doc.data();
+                    
+                    // Update Page Title for SEO
+                    document.title = post.title + " | Arfi Tech";
+
+                    // Populate Data
+                    document.getElementById('article-title').innerText = post.title;
+                    document.getElementById('article-category').innerText = post.category;
+                    document.getElementById('article-date').innerText = post.date;
+                    document.getElementById('article-thumbnail').src = post.thumbnail;
+
+                    // 5. Middle Image Inject Logic
+                    let contentRaw = post.content;
+                    let finalHtml = '';
+
+                    // Replace regular line breaks with HTML line breaks for proper display
+                    contentRaw = contentRaw.replace(/\n/g, '<br>');
+
+                    if (post.middleImage && post.middleImage.trim() !== '') {
+                        // Agar middle image mojood hai, text ko 2 hisson mein divide karein
+                        // hum text ko total length ke half (darmiyan) se break karenge
+                        let midIndex = Math.floor(contentRaw.length / 2);
+                        
+                        // Break at the nearest space to avoid cutting a word or HTML tag in half
+                        let splitIndex = contentRaw.indexOf(' ', midIndex);
+                        if (splitIndex === -1) splitIndex = midIndex;
+
+                        let part1 = contentRaw.substring(0, splitIndex);
+                        let part2 = contentRaw.substring(splitIndex);
+
+                        // Image HTML wrapper
+                        let middleImgHtml = `
+                            <div class="my-10">
+                                <img src="${post.middleImage}" alt="In-article visual" class="w-full h-auto rounded-xl shadow-md border border-gray-100">
+                            </div>
+                        `;
+
+                        finalHtml = `<p>${part1}</p> ${middleImgHtml} <p>${part2}</p>`;
+                    } else {
+                        // Agar middle image nahi di gayi, toh sirf text show karein
+                        finalHtml = `<p>${contentRaw}</p>`;
+                    }
+
+                    document.getElementById('article-body').innerHTML = finalHtml;
+
+                    // Hide Spinner and Show Article
+                    document.getElementById('loading-spinner').classList.add('hidden');
+                    document.getElementById('article-container').classList.remove('hidden');
+
+                } else {
+                    document.getElementById('loading-spinner').innerHTML = '<p class="text-red-500 font-bold text-xl">Article has been deleted or does not exist.</p><a href="index.html" class="text-blue-500 underline mt-4 block">Go back to Home</a>';
+                }
+            }).catch((error) => {
+                console.error("Error fetching article:", error);
+                document.getElementById('loading-spinner').innerHTML = '<p class="text-red-500 font-bold">Failed to load article. Please check your internet connection.</p>';
+            });
+        }
+    </script>
+</body>
+  </html>
+  
