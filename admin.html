@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Arfi Tech</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Firebase SDK (V8 Compat for simple GitHub Pages setup) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+    <!-- Admin Header -->
+    <header class="bg-slate-900 text-white shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-blue-400">Arfi Tech Workspace</h1>
+                <p class="text-xs text-gray-400">Welcome back, Dr Usama Arfi</p>
+            </div>
+            <a href="index.html" class="text-sm bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded transition">View Website</a>
+        </div>
+    </header>
+
+    <!-- Post Creation Form -->
+    <main class="container mx-auto px-6 py-10 max-w-3xl">
+        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">Create New Post</h2>
+            
+            <form id="post-form" class="space-y-6">
+                <!-- Post Title -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Post Title</label>
+                    <input type="text" id="post-title" required placeholder="e.g., How AI is changing nursing..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Category / Tag -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Category (Tag)</label>
+                    <select id="post-tag" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="AI Tech">AI Tech</option>
+                        <option value="Web Dev">Web Development</option>
+                        <option value="Nursing Tech">Nursing & Health Tech</option>
+                        <option value="Software">Software Solutions</option>
+                    </select>
+                </div>
+
+                <!-- Thumbnail Image URL -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail Image (URL)</label>
+                    <input type="url" id="post-image" required placeholder="https://..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Post Content -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Article (HTML allowed)</label>
+                    <textarea id="post-content" required rows="8" placeholder="Write your full blog post here..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="publish-btn" class="w-full bg-slate-900 text-white font-bold py-3 rounded-lg hover:bg-slate-800 transition shadow-md">
+                    Publish Post to Live Website
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- JavaScript & Firebase Logic -->
+    <script>
+        // STEP 1: Yahan apna Firebase Config paste karein (Yeh Firebase console se milega)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        // Form Submit Event
+        document.getElementById('post-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Page refresh hone se roke
+
+            const btn = document.getElementById('publish-btn');
+            btn.innerText = "Publishing...";
+            btn.disabled = true;
+
+            // Get values from form
+            const title = document.getElementById('post-title').value;
+            const tag = document.getElementById('post-tag').value;
+            const image = document.getElementById('post-image').value;
+            const content = document.getElementById('post-content').value;
+            
+            // Format Current Date (e.g., Oct 18, 2026)
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            const dateStr = new Date().toLocaleDateString('en-US', options);
+
+            // Save to Firebase Firestore collection named "posts"
+            db.collection("posts").add({
+                title: title,
+                tag: tag,
+                image: image,
+                content: content,
+                date: dateStr,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() // Sahi sorting ke liye
+            })
+            .then(() => {
+                alert("Boom! Your post is live on Arfi Tech! 🚀");
+                document.getElementById('post-form').reset(); // Form clear karein
+                btn.innerText = "Publish Post to Live Website";
+                btn.disabled = false;
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+                alert("Oops! Koi error aa gaya. Console check karein.");
+                btn.innerText = "Publish Post to Live Website";
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
